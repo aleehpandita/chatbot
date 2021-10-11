@@ -10,6 +10,11 @@ const chalk = require('chalk');
 const ExcelJS = require('exceljs');
 const qrcode = require('qrcode-terminal');
 const { flowConversation } = require('./conversation')
+const puppeteerOptions = {
+    puppeteer:{
+        args:['--no-sandbox','--disable-setuid-sandbox']
+    }
+};
 const { Client, MessageMedia } = require('whatsapp-web.js');
 const app = express();
 app.use(express.urlencoded({ extended: true }))
@@ -168,7 +173,7 @@ const withSession = () => {
  */
 const withOutSession = () => {
     console.log('No tenemos session guardada');
-    client = new Client();
+    client = new Client(puppeteerOptions);
     client.on('qr', qr => {
         qrcode.generate(qr, { small: true });
     });
