@@ -12,7 +12,7 @@ const qrcode = require('qrcode-terminal');
 const { flowConversation } = require('./conversation')
 const puppeteerOptions = {
     puppeteer:{
-        headless: false,
+        headless: true,
         args:['--no-sandbox','--disable-setuid-sandbox']
     }
 };
@@ -47,6 +47,7 @@ const sendMedia = (number, fileName) => {
     const media = MessageMedia.fromFilePath(`./mediaSend/${fileName}`);
     client.sendMessage(number, media);
 }
+
 
 /**
  * Enviamos un mensaje simple (texto) a nuestro cliente
