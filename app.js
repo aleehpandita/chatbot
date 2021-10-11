@@ -12,6 +12,7 @@ const qrcode = require('qrcode-terminal');
 const { flowConversation } = require('./conversation')
 const puppeteerOptions = {
     puppeteer:{
+        headless: false,
         args:['--no-sandbox','--disable-setuid-sandbox']
     }
 };
