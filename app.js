@@ -341,6 +341,6 @@ app.post('/send', sendMessagePost);
 (fs.existsSync(SESSION_FILE_PATH)) ? withSession() : withOutSession();
 
 
-app.listen(9000, () => {
+app.listen(process.env.PORT || 3001, () => {
     console.log('Server ready!');
 })
