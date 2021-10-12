@@ -22,6 +22,25 @@ app.use(express.urlencoded({ extended: true }))
 const SESSION_FILE_PATH = './session.json';
 let client;
 let sessionData;
+let messageResponde = ''
+/**
+ * 
+ * constantes menu
+ * 
+    '🔵  Si deseas obtener información sobre ALTA/BAJA de Placas ante la SCT escribe la palabra  *"PLACAS"* \n',
+ */
+
+ const firstMessage = [
+    '👋 Hola Gracias por contactarnos!\n',
+    '🚗 Te estás comunicando a la asistente del verificentro *MOCHCUN* 🚗  \n',
+    '\n',
+    '🔵  Si deseas obtener la dirección de nuestro centro de verificación vehicular escribe la palabra *"DIRECCION"* \n',
+    '🔵  Si deseas obtener información sobre Verificaciones Vehiculares escribe la palabra *"VERIFICACION"* \n',
+    '🔵  Si deseas obtener información la licencia federal escribe la palabra *"LICENCIA"* \n',
+    '\n',
+    ' Visita nuestro sitio web para más información ⮕ https://mochcun.com',  
+    '\n',
+].join(' ');
 
 /**
  * Guardamos archivos multimedia que nuestro cliente nos envie!
@@ -56,7 +75,7 @@ const sendMedia = (number, fileName) => {
 const sendMessage = (number = null, text = null) => {
     number = number.replace('@c.us', '');
     number = `${number}@c.us`
-    const message = text || `Hola! Gracias por contac`;
+    const message = text || `Hola! Gracias por contactarnos`;
     client.sendMessage(number, message);
     readChat(number, message)
     console.log(`${chalk.red('⚡⚡⚡ Enviando mensajes....')}`);
@@ -95,45 +114,108 @@ const listenMessage = () => {
 
 const replyAsk = (from, answer) => new Promise((resolve, reject) => {
     console.log(`---------->`, answer);
-    if (answer === 'placas' || answer === 'PLACAS' || answer === 'Placas'  ) {
-        resolve(true)
+    let answerSanitized = answer.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    console.log(answerSanitized,"answerSanitized")
+    answerSanitized = answerSanitized.toLowerCase();
     
-            const firstMessage = [
-                '👋 Has elegido la opcion de placas \n',
-            ].join(' ')
-            sendMessage(from, firstMessage)
+    switch(answerSanitized){
+        case 'placas':
+            resolve(true)
+             placasResponse(from)
+            break;
+        case 'verificacion':
+            resolve(true)
+             verificacionResponse(from)
+            break;
+        case 'licencia':
+            resolve(true)
+             licenciaResponse(from)
+            break;
+        case 'direccion':
+            resolve(true)
+             direccionResponse(from)
+            break;
+        case 'fisico':
+            resolve(true)
+            sendMedia(from, 'fisico-informes.png')
+            break;
+        case 'emisiones':
+            resolve(true)
+            sendMedia(from, 'emisiones-informes.png')
+            break;
+        case 'costos':
+            resolve(true)
+            sendMedia(from, 'precios-verificaciones.png')
+            break;
+        case 'prorroga':
+            resolve(true)
+            sendMedia(from, 'prorroga-verificaciones.png')
+            break;  
+        case 'requisitos licencia':
+            resolve(true)
+            sendMedia(from, 'requisitos-licencia.png')
+            break; 
+        case 'cursos':
+            resolve(true)
+            sendMedia(from, 'cursos-requisitos-informes.png')
+            break; 
+        case 'costos licencia':
+            resolve(true)
+            sendMedia(from, 'licencia-costo-2.png')
+            sendMedia(from, 'licencia-costo-1.png')
+            break; 
+        case 'medico':
+            resolve(true)
+            sendMedia(from, 'requisitos-examen-medico.png')
+            break;    
+        default:
+            resolve(true)
+            //sendMessage(from, firstMessage)
+            break;
     }
-    if (answer === 'VERIFICACION' || answer === 'Verificación' || answer === 'verificacion' || answer === 'verificación'  ) {
-        resolve(true)
     
-            const firstMessage = [
-                '👋 Has elegido la opcion de verificacion \n',
-            ].join(' ')
-            sendMessage(from, firstMessage)
-    }
-    if (answer === 'licencia' || answer === 'LICENCIA' || answer === 'Licencia'  ) {
-        resolve(true)
-    
-            const firstMessage = [
-                '👋 Has elegido la opcion de licencia \n',
-            ].join(' ')
-            sendMessage(from, firstMessage)
-    }
-    if (answer === 'DIRECCION' || answer === 'direccion' || answer === 'Dirección' || answer === 'dirección'  ) {
-        resolve(true)
-    
-            const firstMessage = [
-                '👋 Has elefido la opcion de pendejeta \n',
-                'Recuerda subscribirte a mi canal de YT',
-                '------',
-                '------',
-                'Veo que es la primera vez que nos escribes ¿Quieres que te envie un MEME?',
-                'Responde Quieromeme'
-            ].join(' ')
-            sendMessage(from, firstMessage)
-    }
 
 })
+/**
+ * Funciones de cada una de las respuestas 
+ */
+ const placasResponse = async (from) => {
+    messageResponde = [
+        '🚘 ALTA\n',
+        '👋 Has elegido la opcion de placas \n',
+    ].join(' ')
+    sendMessage(from, messageResponde)
+}
+
+const direccionResponse = async (from) => {
+    messageResponde = [
+        '🚘 Estamos ubicados en Av. Kinik Lote 1-11, 1-12, 1-13 Mza. 1 Reg. 97 Zona Industrial. Entre la Av. Andres Q.roo y la Av. Chichen sobre la kinik casi llegando a la Chichen. Rejas Rojas. Frente a la Cerveceria Moctezuna. \n',
+        'https://g.page/Mochcun?share \n',
+    ].join(' ')
+    sendMessage(from, messageResponde)
+}
+
+const verificacionResponse = async (from) => {
+    messageResponde = [
+        '🚘 Haz elegido la opción de verificacion, ¿En qué estas interesado? \n',
+        '✔️ Para precio de Verificaciones escribe *COSTOS* \n',
+        '✔️ Para información de Verificacion de Emisiones Contaminantes escribe *EMISIONES*\n',
+        '✔️ Para información de Verificacion de Fisico Mécanica escribe *FISICO*\n',
+        '✔️ Tienes duda si tu vehiculo cuenta con prorroga? escribe *PRORROGA*\n',
+    ].join(' ')
+    sendMessage(from, messageResponde)
+}
+
+const licenciaResponse = async (from) => {
+    messageResponde = [
+        '🚘 Haz elegido la opción de licencia, ¿En qué estas interesado? \n',
+        '✔️ Para información de cursos de capacitacion escribe *CURSOS* \n',
+        '✔️ Para información de examen medico psico fisico escribe *MEDICO*\n',
+        '✔️ Para requisitos de la licencia escribe *Requisitos licencia*\n',
+        '✔️ Para costos de gestoria de la licencia escribe *costos licencia*\n',
+    ].join(' ')
+    sendMessage(from, messageResponde)
+}
 
 /**
  * Revisamos si tenemos credenciales guardadas para inciar sessio
@@ -193,6 +275,7 @@ const withOutSession = () => {
     client.on('authenticated', (session) => {
         // Guardamos credenciales de de session para usar luego
         sessionData = session;
+
         fs.writeFile(SESSION_FILE_PATH, JSON.stringify(session), function (err) {
             if (err) {
                 console.log(err);
@@ -214,9 +297,32 @@ const connectionReady = () => {
 const readExcel = async () => {
     const pathExcel = `./chats/clientes-saludar.xlsx`;
     const workbook = new ExcelJS.Workbook();
-    await workbook.xlsx.readFile(pathExcel);
-    const worksheet = workbook.getWorksheet(1);
+    await workbook.xlsx.readFile(pathExcel)
+    .then(() => {
+        console.log("read");
+    })
+    .catch((err) => {
+        console.log("err", err);
+    });
+
+    // fetch sheet by name
+    const worksheet = workbook.getWorksheet('Hoja1');
+
+// fetch sheet by id
+// INFO: Be careful when using it!
+// It tries to access to `worksheet.id` field. Sometimes (really very often) workbook has worksheets with id not starting from 1.
+// For instance It happens when any worksheet has been deleted.
+// It's much more safety when you assume that ids are random. And stop to use this function.
+// If you need to access all worksheets in a loop please look to the next example.
+//const worksheet = workbook.getWorksheet(1);
+
+// access by `worksheets` array:
+//const worksheet =  workbook.worksheets[0]; //the first one;
+
+   // const worksheet = workbook.getWorksheet(1);
     const columnNumbers = worksheet.getColumn('A');
+
+
     columnNumbers.eachCell((cell, rowNumber) => {
         const numberCustomer = cell.value
 
@@ -234,7 +340,14 @@ const readExcel = async () => {
         }
     });
 
-    workbook.xlsx.writeFile(pathExcel);
+    workbook.xlsx.writeFile(pathExcel) 
+    .then(() => {
+
+        console.log("saved");
+    })
+    .catch((err) => {
+        console.log("err", err);
+    });
 
 }
 
@@ -262,7 +375,14 @@ const readChat = async (number, message) => {
                 getRowInsert.getCell('A').value = today;
                 getRowInsert.getCell('B').value = message;
                 getRowInsert.commit();
-                workbook.xlsx.writeFile(pathExcel);
+                workbook.xlsx.writeFile(pathExcel)
+                .then(() => {
+
+                    console.log("saved");
+                })
+                .catch((err) => {
+                    console.log("err", err);
+                });
             });
 
     } else {
@@ -286,6 +406,7 @@ const readChat = async (number, message) => {
     }
 }
 
+
 /**
  * Saludos a primera respuesta
  * @param {*} req 
@@ -297,21 +418,6 @@ const greetCustomer = (from) => new Promise((resolve, reject) => {
 
     const pathExcel = `./chats/${from}@c.us.xlsx`;
     if (!fs.existsSync(pathExcel)) {
-        const firstMessage = [
-            '👋 Hola Gracias por contactarnos!\n',
-            '🚗 Te estás comunicando a la asistente del verificentro *MOCHCUN* 🚗  \n',
-            '\n',
-            '🔵  Si deseas obtener la dirección de nuestro centro de verificación vehicular escribe la palabra *"DIRECCION"* \n',
-            '🔵  Si deseas obtener información sobre Verificaciones Vehiculares escribe la palabra *"VERIFICACION"* \n',
-            '🔵  Si deseas obtener información la licencia federal escribe la palabra *"LICENCIA"* \n',
-            '🔵  Si deseas obtener información sobre ALTA/BAJA de Placas ante la SCT escribe la palabra  *"PLACAS"* \n',
-            '\n',
-            '✅ Información general sobre los cursos de capacitación vehicular ⮕ https://bit.ly/3od1Bl6',
-            ' Visita nuestro sitio web para más información ⮕ https://bit.ly/3pg1Q02',
-            
-            '\n',
-        ].join(' ')
-
         sendMessage(from, firstMessage)
         // sendMedia(from, 'curso-1-1.png')
         // sendMedia(from, 'curso-2.png')
