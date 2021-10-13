@@ -266,6 +266,7 @@ const withOutSession = () => {
         console.log('Client is ready!');
         connectionReady();
     });
+    
 
     client.on('auth_failure', () => {
         console.log('** Error de autentificacion vuelve a generar el QRCODE **');
