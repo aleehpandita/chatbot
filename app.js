@@ -22,7 +22,24 @@ app.use(express.urlencoded({ extended: true }))
 const SESSION_FILE_PATH = './session.json';
 let client;
 let sessionData;
-let messageResponde = ''
+let messageResponde = '';
+
+const requisitoExamenMedicoImg = 'https://res.cloudinary.com/devpom/image/upload/q_10/v1634093072/mochcun/requisitos-examen-medico.png';
+const requisitoAltaPlacaImg = 'https://res.cloudinary.com/devpom/image/upload/q_10/v1634093070/mochcun/requisitos-alta-placas.png';
+const emisionesInformesImg = 'https://res.cloudinary.com/devpom/image/upload/q_10/v1634093070/mochcun/emisiones-informes.png';
+const fisicoInformesImg ='https://res.cloudinary.com/devpom/image/upload/q_10/v1634093069/mochcun/fisico-informes.png';
+const requisitoBajaPLacaImg = 'https://res.cloudinary.com/devpom/image/upload/q_10/v1634093069/mochcun/requisitos-baja-placas.png';
+const cursosRequisitosImg = 'https://res.cloudinary.com/devpom/image/upload/q_10/v1634093068/mochcun/cursos-requisitos-informes.png';
+const prorrogaImg = 'https://res.cloudinary.com/devpom/image/upload/q_10/v1634093069/mochcun/prorroga-verificaciones.png';
+const requisitosAltaEmpresa = 'https://res.cloudinary.com/devpom/image/upload/q_10/v1634093067/mochcun/requisitos-alta-empresa.png';
+const licenciaCosto1LetraImg = 'https://res.cloudinary.com/devpom/image/upload/q_10/v1634093067/mochcun/licencia-costo-1.png';
+const licenciaCosto2LetraImg = 'https://res.cloudinary.com/devpom/image/upload/q_10/v1634093066/mochcun/licencia-costo-2.png';
+const precioVerificacionesImg = 'https://res.cloudinary.com/devpom/image/upload/q_10/v1634093066/mochcun/precios-verificaciones.png';
+const requisitosLicenciaImg = 'https://res.cloudinary.com/devpom/image/upload/q_10/v1634093018/mochcun/requisitos-licencia.png';
+
+
+
+
 /**
  * 
  * constantes menu
@@ -37,6 +54,7 @@ let messageResponde = ''
     '🔵  Si deseas obtener la dirección de nuestro centro de verificación vehicular escribe la palabra *"DIRECCION"* \n',
     '🔵  Si deseas obtener información sobre Verificaciones Vehiculares escribe la palabra *"VERIFICACION"* \n',
     '🔵  Si deseas obtener información la licencia federal escribe la palabra *"LICENCIA"* \n',
+    '🔵  Si deseas obtener información sobre ALTA/BAJA de Placas ante la SCT escribe la palabra  *"PLACAS"* \n',
     '\n',
     ' Visita nuestro sitio web para más información ⮕ https://mochcun.com',  
     '\n',
@@ -63,7 +81,7 @@ const saveMedia = (media) => {
 const sendMedia = (number, fileName) => {
     number = number.replace('@c.us', '');
     number = `${number}@c.us`
-    const media = MessageMedia.fromFilePath(`./mediaSend/${fileName}`);
+    const media = MessageMedia.fromUrl(fileName);
     client.sendMessage(number, media);
 }
 
@@ -137,36 +155,36 @@ const replyAsk = (from, answer) => new Promise((resolve, reject) => {
             break;
         case 'fisico':
             resolve(true)
-            sendMedia(from, 'fisico-informes.png')
+            sendMedia(from, fisicoInformesImg)
             break;
         case 'emisiones':
             resolve(true)
-            sendMedia(from, 'emisiones-informes.png')
+            sendMedia(from, emisionesInformesImg)
             break;
         case 'costos':
             resolve(true)
-            sendMedia(from, 'precios-verificaciones.png')
+            sendMedia(from, precioVerificacionesImg)
             break;
         case 'prorroga':
             resolve(true)
-            sendMedia(from, 'prorroga-verificaciones.png')
+            sendMedia(from, prorrogaImg)
             break;  
         case 'requisitos licencia':
             resolve(true)
-            sendMedia(from, 'requisitos-licencia.png')
+            sendMedia(from, requisitosLicenciaImg)
             break; 
         case 'cursos':
             resolve(true)
-            sendMedia(from, 'cursos-requisitos-informes.png')
+            sendMedia(from, cursosRequisitosImg)
             break; 
         case 'costos licencia':
             resolve(true)
-            sendMedia(from, 'licencia-costo-2.png')
-            sendMedia(from, 'licencia-costo-1.png')
+            sendMedia(from, licenciaCosto2LetraImg)
+            sendMedia(from, licenciaCosto1LetraImg)
             break; 
         case 'medico':
             resolve(true)
-            sendMedia(from, 'requisitos-examen-medico.png')
+            sendMedia(from, requisitoExamenMedicoImg)
             break;    
         default:
             resolve(true)
@@ -181,8 +199,9 @@ const replyAsk = (from, answer) => new Promise((resolve, reject) => {
  */
  const placasResponse = async (from) => {
     messageResponde = [
-        '🚘 ALTA\n',
-        '👋 Has elegido la opcion de placas \n',
+        '👋 Has elegido la opcion de placas, ¿En qué estas interesado?  \n',
+        '🚘 ALTA DE PLACAS ANTE LA SCT \n',
+        '🚘 BAJA DE PLACAS ANTE LA SCT\n',
     ].join(' ')
     sendMessage(from, messageResponde)
 }
