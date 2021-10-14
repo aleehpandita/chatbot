@@ -26,16 +26,6 @@ let client;
 let sessionData;
 let messageResponde = '';
 
-request = require('request');
-
-var download = function(uri, filename, callback){
-  request.head(uri, function(err, res, body){
-    console.log('content-type:', res.headers['content-type']);
-    console.log('content-length:', res.headers['content-length']);
-
-    request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
-  });
-};
 
 const requisitoExamenMedicoImg = 'requisitos-examen-medico.png';
 const requisitoAltaPlacaImg = 'requisitos-alta-placas.png';
