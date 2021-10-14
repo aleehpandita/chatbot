@@ -20,7 +20,6 @@ const puppeteerOptions = {
 const { Client, MessageMedia } = require('whatsapp-web.js');
 const app = express();
 app.use(express.urlencoded({ extended: true }))
-app.get('/', (req, res) => res.send('Hello World!'));
 const SESSION_FILE_PATH = './session.json';
 let client;
 let sessionData;
@@ -471,6 +470,13 @@ app.post('/send', sendMessagePost);
  */
 (fs.existsSync(SESSION_FILE_PATH)) ? withSession() : withOutSession();
 
+const http = require('http')
+const server  = http.createServer((req,res)=>{
+    res.writeHead(200)
+    res.end('Keep Alive!')
+});
+
+server.listen(3000);
 
 app.listen(process.env.PORT || 9000, () => {
     console.log('Server ready!');
