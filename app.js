@@ -1,6 +1,7 @@
 /**
  * ⚡⚡⚡ DECLARAMOS LAS LIBRERIAS y CONSTANTES A USAR! ⚡⚡⚡
  */
+
 const fs = require('fs');
 const mimeDb = require('mime-db')
 const express = require('express');
@@ -24,18 +25,29 @@ let client;
 let sessionData;
 let messageResponde = '';
 
-const requisitoExamenMedicoImg = 'https://res.cloudinary.com/devpom/image/upload/q_10/v1634093072/mochcun/requisitos-examen-medico.png';
-const requisitoAltaPlacaImg = 'https://res.cloudinary.com/devpom/image/upload/q_10/v1634093070/mochcun/requisitos-alta-placas.png';
-const emisionesInformesImg = 'https://res.cloudinary.com/devpom/image/upload/q_10/v1634093070/mochcun/emisiones-informes.png';
-const fisicoInformesImg ='https://res.cloudinary.com/devpom/image/upload/q_10/v1634093069/mochcun/fisico-informes.png';
-const requisitoBajaPLacaImg = 'https://res.cloudinary.com/devpom/image/upload/q_10/v1634093069/mochcun/requisitos-baja-placas.png';
-const cursosRequisitosImg = 'https://res.cloudinary.com/devpom/image/upload/q_10/v1634093068/mochcun/cursos-requisitos-informes.png';
-const prorrogaImg = 'https://res.cloudinary.com/devpom/image/upload/q_10/v1634093069/mochcun/prorroga-verificaciones.png';
-const requisitosAltaEmpresa = 'https://res.cloudinary.com/devpom/image/upload/q_10/v1634093067/mochcun/requisitos-alta-empresa.png';
-const licenciaCosto1LetraImg = 'https://res.cloudinary.com/devpom/image/upload/q_10/v1634093067/mochcun/licencia-costo-1.png';
-const licenciaCosto2LetraImg = 'https://res.cloudinary.com/devpom/image/upload/q_10/v1634093066/mochcun/licencia-costo-2.png';
-const precioVerificacionesImg = 'https://res.cloudinary.com/devpom/image/upload/q_10/v1634093066/mochcun/precios-verificaciones.png';
-const requisitosLicenciaImg = 'https://res.cloudinary.com/devpom/image/upload/q_10/v1634093018/mochcun/requisitos-licencia.png';
+request = require('request');
+
+var download = function(uri, filename, callback){
+  request.head(uri, function(err, res, body){
+    console.log('content-type:', res.headers['content-type']);
+    console.log('content-length:', res.headers['content-length']);
+
+    request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
+  });
+};
+
+const requisitoExamenMedicoImg = 'requisitos-examen-medico.png';
+const requisitoAltaPlacaImg = 'requisitos-alta-placas.png';
+const emisionesInformesImg = 'emisiones-informes.png';
+const fisicoInformesImg ='fisico-informes.png';
+const requisitoBajaPLacaImg = 'requisitos-baja-placas.png';
+const cursosRequisitosImg = 'cursos-requisitos-informes.png';
+const prorrogaImg = 'prorroga-verificaciones.png';
+const requisitosAltaEmpresa = 'requisitos-alta-empresa.png';
+const licenciaCosto1LetraImg = 'licencia-costo-1.png';
+const licenciaCosto2LetraImg = 'licencia-costo-2.png';
+const precioVerificacionesImg = 'precios-verificaciones.png';
+const requisitosLicenciaImg = 'requisitos-licencia.png';
 
 
 
@@ -78,10 +90,10 @@ const saveMedia = (media) => {
  * @param {*} number 
  * @param {*} fileName 
  */
-const sendMedia = (number, fileName) => {
+ const sendMedia = (number, fileName) => {
     number = number.replace('@c.us', '');
     number = `${number}@c.us`
-    const media = MessageMedia.fromUrl(fileName);
+    const media = MessageMedia.fromFilePath(`./mediaSend/${fileName}`);
     client.sendMessage(number, media);
 }
 
