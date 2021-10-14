@@ -20,6 +20,7 @@ const puppeteerOptions = {
 const { Client, MessageMedia } = require('whatsapp-web.js');
 const app = express();
 app.use(express.urlencoded({ extended: true }))
+app.get('/', (req, res) => res.send('Hello World!'));
 const SESSION_FILE_PATH = './session.json';
 let client;
 let sessionData;
