@@ -14,7 +14,8 @@ const { flowConversation } = require('./conversation')
 const puppeteerOptions = {
     puppeteer:{
         headless: true,
-        args:['--no-sandbox','--disable-setuid-sandbox']
+        args:['--no-sandbox','--disable-setuid-sandbox'],
+        ignoreDefaultArgs: ['--disable-extensions']
     }
 };
 const { Client, MessageMedia } = require('whatsapp-web.js');
