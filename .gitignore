@@ -2,3 +2,4 @@
 /node_modules/*
 session.json
 .vercel
+.DS_Store

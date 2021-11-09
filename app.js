@@ -57,6 +57,7 @@ const requisitosLicenciaImg = 'requisitos-licencia.png';
     '🔵  Si deseas obtener información sobre Verificaciones Vehiculares escribe la palabra *"VERIFICACION"* \n',
     '🔵  Si deseas obtener información la licencia federal escribe la palabra *"LICENCIA"* \n',
     '🔵  Si deseas obtener información sobre ALTA/BAJA de Placas ante la SCT escribe la palabra  *"PLACAS"* \n',
+    '🔵  Si deseas obtener información sobre ALTA de Empresa ante la SCT escribe la palabra  *"ALTA EMPRESA"* \n',
     '\n',
     ' Visita nuestro sitio web para más información ⮕ https://mochcun.com',  
     '\n',
@@ -187,10 +188,18 @@ const replyAsk = (from, answer) => new Promise((resolve, reject) => {
         case 'medico':
             resolve(true)
             sendMedia(from, requisitoExamenMedicoImg)
-            break;    
+            break;   
+        case 'alta':
+            resolve(true)
+            sendMedia(from, requisitoAltaPlacaImg)
+            break;  
+        case 'baja':
+            resolve(true)
+            sendMedia(from, requisitoBajaPLacaImg)
+            break;   
         default:
             resolve(true)
-            //sendMessage(from, firstMessage)
+            sendMessage(from, firstMessage)
             break;
     }
     
@@ -202,8 +211,8 @@ const replyAsk = (from, answer) => new Promise((resolve, reject) => {
  const placasResponse = async (from) => {
     messageResponde = [
         '👋 Has elegido la opcion de placas, ¿En qué estas interesado?  \n',
-        '🚘 ALTA DE PLACAS ANTE LA SCT \n',
-        '🚘 BAJA DE PLACAS ANTE LA SCT\n',
+        '🚘 ALTA DE PLACAS ANTE LA SCT escribe ALTA\n',
+        '🚘 BAJA DE PLACAS ANTE LA SCT escribe BAJA\n',
     ].join(' ')
     sendMessage(from, messageResponde)
 }
@@ -268,8 +277,6 @@ const withSession = () => {
         spinner.stop();
         console.log('** F Error de autentificacion vuelve a generar el QRCODE (Borrar el archivo session.json) **');
     })
-
-
     client.initialize();
 }
 
@@ -474,9 +481,10 @@ const http = require('http')
 const server  = http.createServer((req,res)=>{
     res.writeHead(200)
     res.end('Keep Alive!')
+    console.log('si llega aqui')
 });
 
-server.listen(3000);
+//server.listen(3000);
 
 app.listen(process.env.PORT || 9000, () => {
     console.log('Server ready!');
