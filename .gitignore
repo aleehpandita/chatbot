@@ -3,3 +3,4 @@
 session.json
 .vercel
 .DS_Store
+package-lock.json

@@ -23,11 +23,14 @@
     "mime-db": "^1.46.0",
     "moment": "^2.29.1",
     "ora": "^5.4.0",
-    "puppeteer": "^10.4.0",
     "qrcode-terminal": "^0.12.0",
     "request": "^2.88.2",
     "true-myth": "^2.2.8",
     "whatsapp-web.js": "^1.12.5",
-    "xlsx": "^0.16.9"
+    "xlsx": "^0.16.9",
+    "puppeteer": "^3.0.0"
+  },
+  "devDependencies": {
+    "puppeteer": "^3.0.0"
   }
 }
